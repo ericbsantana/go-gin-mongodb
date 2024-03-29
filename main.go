@@ -14,8 +14,8 @@ import (
 func setupRouter(db *mongo.Database) *gin.Engine {
 	r := gin.Default()
 
-	userRepo := repositories.UserRepositoryFromDatabase(db)
-	userHandler := handlers.UserHandlerFromRepository(userRepo)
+	userRepository := repositories.UserRepositoryFromDatabase(db)
+	userHandler := handlers.UserHandlerFromRepository(userRepository)
 
 	r.GET("/users", userHandler.Find)
 	r.POST("/users", userHandler.Create)
