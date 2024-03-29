@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"errors"
 	"net/http"
 	"rest-api/internal/dtos"
 	"rest-api/internal/models"
@@ -32,28 +31,10 @@ func (h *UserHandler) Find(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 }
 
-func ParseAndValidateDTO(c *gin.Context, dto interface{}) ([]string, error) {
-	if c.Request.ContentLength == 0 {
-		return nil, errors.New("request body cannot be empty")
-	}
-
-	if err := c.ShouldBindJSON(dto); err != nil {
-		return nil, err
-	}
-
-	if err := validator.GetValidator().Struct(dto); err != nil {
-		validationErrorMessages := validator.GetValidationErrorMessages(err)
-
-		return validationErrorMessages, nil
-	}
-
-	return nil, nil
-}
-
 func (h *UserHandler) Create(c *gin.Context) {
 	var createUserDTO dtos.CreateUserDTO
 
-	messages, err := ParseAndValidateDTO(c, &createUserDTO)
+	messages, err := validator.ParseAndValidateDTO(c, &createUserDTO)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
