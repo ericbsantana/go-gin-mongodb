@@ -35,7 +35,7 @@ func (r *UserRepository) Find() ([]models.User, error) {
 		return nil, err
 	}
 
-	return []models.User{}, nil
+	return results, nil
 }
 
 func (r *UserRepository) Create(user models.User) (*mongo.InsertOneResult, error) {
