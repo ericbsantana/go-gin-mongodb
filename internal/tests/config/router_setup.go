@@ -11,7 +11,7 @@ import (
 func SetupTestRouter() *gin.Engine {
 	r := gin.Default()
 
-	userRepository := repositories.UserRepositoryFromDatabase(TestDbInstance)
+	userRepository := repositories.UserRepositoryFromDatabase(TestDBInstance)
 	userHandler := handlers.UserHandlerFromRepository(userRepository)
 
 	r.GET("/users", userHandler.Find)

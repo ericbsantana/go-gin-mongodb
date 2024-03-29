@@ -15,9 +15,9 @@ import (
 
 func TestMain(m *testing.M) {
 	log.Println("setup is running")
-	testDB := config_test.SetupTestDatabase()
-	config_test.TestDbInstance = testDB.DbInstance
-	config_test.PopulateDB()
+	testDB := config_test.SetupTestDB()
+	config_test.TestDBInstance = testDB.Database
+	config_test.SeedTestDatabase()
 	exitVal := m.Run()
 	log.Println("teardown is running")
 	_ = testDB.Container.Terminate(context.Background())
