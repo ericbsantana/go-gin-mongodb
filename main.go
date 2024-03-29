@@ -1,49 +1,23 @@
 package main
 
 import (
-	"fmt"
+	"context"
 	"net/http"
-	mongo "rest-api/internal/repository"
+	"rest-api/internal/database"
+	"rest-api/internal/handlers"
+	"rest-api/internal/repositories"
 
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type Handler struct {
-	Repository *mongo.Repository
-}
-
-func NewHandler(repo *mongo.Repository) *Handler {
-	return &Handler{
-		Repository: repo,
-	}
-}
-
-func (h *Handler) GetAllUsersHandler(c *gin.Context) {
-	users, err := h.Repository.FindAll()
-
-	if err != nil {
-		fmt.Printf("Error getting users from MongoDB: %v", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve users"})
-		return
-	}
-
-	c.JSON(http.StatusOK, users)
-}
-
-func setupRouter() *gin.Engine {
+func setupRouter(db *mongo.Database) *gin.Engine {
 	r := gin.Default()
 
-	db, err := mongo.ConnectMongoDB()
+	userRepo := repositories.NewUserRepository(db)
+	userHandler := handlers.NewUserHandler(userRepo)
 
-	if err != nil {
-		fmt.Printf("Error connecting to MongoDB: %v", err)
-	}
-
-	repo := mongo.NewRepository(db)
-
-	handler := NewHandler(repo)
-
-	r.GET("/users", handler.GetAllUsersHandler)
+	r.GET("/users", userHandler.GetAllUsersHandler)
 
 	r.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "OK")
@@ -53,7 +27,15 @@ func setupRouter() *gin.Engine {
 }
 
 func main() {
-	r := setupRouter()
+	db, c, err := database.InitializeMongoDBConnection()
+
+	if err != nil {
+		panic(err)
+	}
+
+	r := setupRouter(db)
+
+	defer c.Disconnect(context.Background())
 
 	r.Run(":8080")
 }
