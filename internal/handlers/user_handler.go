@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"rest-api/internal/dtos"
 	"rest-api/internal/models"
@@ -58,12 +59,27 @@ func (h *UserHandler) Create(c *gin.Context) {
 		Email:    createUserDTO.Email,
 	}
 
-	_, err = h.Repository.Create(user)
+	createdUser, err := h.Repository.Create(user)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"message": "User created successfully"})
+	c.JSON(http.StatusCreated, gin.H{"id": createdUser.InsertedID, "username": user.Username, "email": user.Email})
+}
+
+func (h *UserHandler) FindByID(c *gin.Context) {
+	id := c.Param("id")
+
+	fmt.Println(id)
+
+	user, err := h.Repository.FindByID(id)
+
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{})
+		return
+	}
+
+	c.JSON(http.StatusOK, user)
 }

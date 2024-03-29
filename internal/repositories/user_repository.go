@@ -5,6 +5,7 @@ import (
 	"rest-api/internal/models"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -56,6 +57,26 @@ func (r *UserRepository) FindByEmail(email string) (*models.User, error) {
 	var user models.User
 
 	err := collection.FindOne(context.Background(), bson.D{{Key: "email", Value: email}}).Decode(&user)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+func (r *UserRepository) FindByID(id string) (*models.User, error) {
+	collection := r.db.Collection("users")
+
+	var user models.User
+
+	objectID, err := primitive.ObjectIDFromHex(id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = collection.FindOne(context.Background(), bson.D{{Key: "_id", Value: objectID}}).Decode(&user)
 
 	if err != nil {
 		return nil, err

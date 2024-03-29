@@ -18,6 +18,7 @@ func SetupRouter(db *mongo.Database) *gin.Engine {
 	userHandler := handlers.UserHandlerFromRepository(userRepository)
 
 	r.GET("/users", userHandler.Find)
+	r.GET("/users/:id", userHandler.FindByID)
 	r.POST("/users", userHandler.Create)
 
 	r.GET("/", func(c *gin.Context) {
