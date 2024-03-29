@@ -111,3 +111,20 @@ func (r *UserRepository) Update(id string, user models.User) (*mongo.UpdateResul
 
 	return result, nil
 }
+
+func (r *UserRepository) Delete(id string) (*mongo.DeleteResult, error) {
+	collection := r.db.Collection("users")
+
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, err
+	}
+
+	result, err := collection.DeleteOne(context.Background(), bson.D{{Key: "_id", Value: objectID}})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}

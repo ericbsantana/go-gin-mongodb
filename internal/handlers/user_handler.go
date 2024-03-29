@@ -121,3 +121,23 @@ func (h *UserHandler) Update(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"id": updatedUser.ID, "username": updatedUser.Username, "email": updatedUser.Email})
 }
+
+func (h *UserHandler) Delete(c *gin.Context) {
+	id := c.Param("id")
+
+	_, err := h.Repository.FindByID(id)
+
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{`message`: `User not found`})
+		return
+	}
+
+	_, err = h.Repository.Delete(id)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to delete user"})
+		return
+	}
+
+	c.JSON(http.StatusNoContent, gin.H{})
+}

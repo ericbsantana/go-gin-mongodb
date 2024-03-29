@@ -18,6 +18,7 @@ func SetupTestRouter() *gin.Engine {
 	r.GET("/users/:id", userHandler.FindByID)
 	r.POST("/users", userHandler.Create)
 	r.PATCH("/users/:id", userHandler.Update)
+	r.DELETE("/users/:id", userHandler.Delete)
 
 	r.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "OK")

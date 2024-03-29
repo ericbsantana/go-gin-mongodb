@@ -14,6 +14,10 @@ import (
 func SetupRouter(db *mongo.Database) *gin.Engine {
 	r := gin.Default()
 
+	r.GET("/", func(c *gin.Context) {
+		c.String(http.StatusOK, "OK")
+	})
+
 	userRepository := repositories.UserRepositoryFromDatabase(db)
 	userHandler := handlers.UserHandlerFromRepository(userRepository)
 
@@ -21,10 +25,7 @@ func SetupRouter(db *mongo.Database) *gin.Engine {
 	r.GET("/users/:id", userHandler.FindByID)
 	r.POST("/users", userHandler.Create)
 	r.PATCH("/users/:id", userHandler.Update)
-
-	r.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "OK")
-	})
+	r.DELETE("/users/:id", userHandler.Delete)
 
 	return r
 }
