@@ -8,8 +8,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func InitializeMongoDBConnection() (*mongo.Database, *mongo.Client, error) {
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+func InitializeMongoDBConnection(uri string) (*mongo.Database, *mongo.Client, error) {
+	clientOptions := options.Client().ApplyURI(uri)
 
 	c, err := mongo.Connect(context.Background(), clientOptions)
 

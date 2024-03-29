@@ -11,7 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func setupRouter(db *mongo.Database) *gin.Engine {
+func SetupRouter(db *mongo.Database) *gin.Engine {
 	r := gin.Default()
 
 	userRepository := repositories.UserRepositoryFromDatabase(db)
@@ -28,13 +28,13 @@ func setupRouter(db *mongo.Database) *gin.Engine {
 }
 
 func main() {
-	db, c, err := database.InitializeMongoDBConnection()
+	db, c, err := database.InitializeMongoDBConnection("mongodb://localhost:27017")
 
 	if err != nil {
 		panic(err)
 	}
 
-	r := setupRouter(db)
+	r := SetupRouter(db)
 
 	defer c.Disconnect(context.Background())
 
