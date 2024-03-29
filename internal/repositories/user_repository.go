@@ -84,3 +84,30 @@ func (r *UserRepository) FindByID(id string) (*models.User, error) {
 
 	return &user, nil
 }
+
+func (r *UserRepository) Update(id string, user models.User) (*mongo.UpdateResult, error) {
+	collection := r.db.Collection("users")
+
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, err
+	}
+
+	updateFields := bson.D{}
+
+	if user.Email != "" {
+		updateFields = append(updateFields, bson.E{Key: "email", Value: user.Email})
+	}
+
+	if user.Username != "" {
+		updateFields = append(updateFields, bson.E{Key: "username", Value: user.Username})
+	}
+
+	result, err := collection.UpdateOne(context.Background(), bson.D{{Key: "_id", Value: objectID}}, bson.D{{Key: "$set", Value: updateFields}})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}

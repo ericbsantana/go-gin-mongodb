@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"rest-api/internal/dtos"
 	"rest-api/internal/models"
@@ -72,8 +71,6 @@ func (h *UserHandler) Create(c *gin.Context) {
 func (h *UserHandler) FindByID(c *gin.Context) {
 	id := c.Param("id")
 
-	fmt.Println(id)
-
 	user, err := h.Repository.FindByID(id)
 
 	if err != nil {
@@ -82,4 +79,45 @@ func (h *UserHandler) FindByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, user)
+}
+
+func (h *UserHandler) Update(c *gin.Context) {
+	id := c.Param("id")
+
+	var updateUserDTO dtos.UpdateUserDTO
+
+	messages, err := validator.ParseAndValidateDTO(c, &updateUserDTO)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if messages != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"errors": messages})
+		return
+	}
+
+	_, err = h.Repository.FindByID(id)
+
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{})
+		return
+	}
+
+	user := models.User{
+		Username: updateUserDTO.Username,
+		Email:    updateUserDTO.Email,
+	}
+
+	_, err = h.Repository.Update(id, user)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update user"})
+		return
+	}
+
+	updatedUser, _ := h.Repository.FindByID(id)
+
+	c.JSON(http.StatusOK, gin.H{"id": updatedUser.ID, "username": updatedUser.Username, "email": updatedUser.Email})
 }
