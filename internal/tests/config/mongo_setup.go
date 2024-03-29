@@ -82,8 +82,12 @@ func createMongoDBContainer(ctx context.Context) (testcontainers.Container, *mon
 func SeedTestDatabase() {
 	var users = []interface{}{
 		models.User{
-			ID:    primitive.NewObjectID(),
-			Email: "ludwig.wittgenstein@wien.com",
+			ID: func() primitive.ObjectID {
+				id, _ := primitive.ObjectIDFromHex("6607077651565dc6fbb91859")
+				return id
+			}(),
+			Username: "oppenheimer",
+			Email:    "oppenheimer@example.com",
 		},
 		models.User{
 			ID:    primitive.NewObjectID(),
