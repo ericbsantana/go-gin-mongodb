@@ -46,14 +46,21 @@ func (h *UserHandler) Create(c *gin.Context) {
 		return
 	}
 
+	_, err = h.Repository.FindByEmail(createUserDTO.Email)
+
+	if err == nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "User with email already exists"})
+		return
+	}
+
 	user := models.User{
 		Username: createUserDTO.Username,
 		Email:    createUserDTO.Email,
 	}
 
-	_, rerr := h.Repository.Create(user)
+	_, err = h.Repository.Create(user)
 
-	if rerr != nil {
+	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
 		return
 	}

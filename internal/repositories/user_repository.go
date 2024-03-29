@@ -49,3 +49,17 @@ func (r *UserRepository) Create(user models.User) (*mongo.InsertOneResult, error
 
 	return result, nil
 }
+
+func (r *UserRepository) FindByEmail(email string) (*models.User, error) {
+	collection := r.db.Collection("users")
+
+	var user models.User
+
+	err := collection.FindOne(context.Background(), bson.D{{Key: "email", Value: email}}).Decode(&user)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
