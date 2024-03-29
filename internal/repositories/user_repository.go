@@ -18,7 +18,7 @@ func UserRepositoryFromDatabase(db *mongo.Database) *UserRepository {
 	}
 }
 
-func (r *UserRepository) FindAll() ([]models.User, error) {
+func (r *UserRepository) Find() ([]models.User, error) {
 	collection := r.db.Collection("users")
 
 	cursor, err := collection.Find(context.Background(), bson.D{{}})
@@ -36,4 +36,16 @@ func (r *UserRepository) FindAll() ([]models.User, error) {
 	}
 
 	return []models.User{}, nil
+}
+
+func (r *UserRepository) Create(user models.User) (*mongo.InsertOneResult, error) {
+	collection := r.db.Collection("users")
+
+	result, err := collection.InsertOne(context.Background(), user)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }

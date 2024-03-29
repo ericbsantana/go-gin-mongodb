@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"net/http"
-	"rest-api/internal/database"
+	database "rest-api/internal/databases"
 	"rest-api/internal/handlers"
 	"rest-api/internal/repositories"
 
@@ -18,6 +18,7 @@ func setupRouter(db *mongo.Database) *gin.Engine {
 	userHandler := handlers.UserHandlerFromRepository(userRepo)
 
 	r.GET("/users", userHandler.Find)
+	r.POST("/users", userHandler.Create)
 
 	r.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "OK")
