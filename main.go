@@ -14,10 +14,10 @@ import (
 func setupRouter(db *mongo.Database) *gin.Engine {
 	r := gin.Default()
 
-	userRepo := repositories.NewUserRepository(db)
-	userHandler := handlers.NewUserHandler(userRepo)
+	userRepo := repositories.UserRepositoryFromDatabase(db)
+	userHandler := handlers.UserHandlerFromRepository(userRepo)
 
-	r.GET("/users", userHandler.GetAllUsersHandler)
+	r.GET("/users", userHandler.Find)
 
 	r.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "OK")

@@ -11,13 +11,13 @@ type UserHandler struct {
 	Repository *repositories.UserRepository
 }
 
-func NewUserHandler(repo *repositories.UserRepository) *UserHandler {
+func UserHandlerFromRepository(repo *repositories.UserRepository) *UserHandler {
 	return &UserHandler{
 		Repository: repo,
 	}
 }
 
-func (h *UserHandler) GetAllUsersHandler(c *gin.Context) {
+func (h *UserHandler) Find(c *gin.Context) {
 	users, err := h.Repository.FindAll()
 
 	if err != nil {
