@@ -1,9 +1,9 @@
 package config_test
 
 import (
+	"go-gin-mongo/internal/handlers"
+	"go-gin-mongo/internal/repositories"
 	"net/http"
-	"rest-api/internal/handlers"
-	"rest-api/internal/repositories"
 
 	"github.com/gin-gonic/gin"
 )

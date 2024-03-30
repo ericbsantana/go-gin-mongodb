@@ -3,8 +3,8 @@ package config_test
 import (
 	"context"
 	"fmt"
-	"rest-api/internal/databases"
-	"rest-api/internal/models"
+	"go-gin-mongo/internal/databases"
+	"go-gin-mongo/internal/models"
 	"time"
 
 	"github.com/testcontainers/testcontainers-go"
@@ -47,7 +47,7 @@ func createMongoDBContainer(ctx context.Context) (testcontainers.Container, *mon
 	var env = map[string]string{
 		"MONGO_INITDB_ROOT_USERNAME": "kiwi",
 		"MONGO_INITDB_ROOT_PASSWORD": "kiwi",
-		"MONGO_INITDB_DATABASE":      "rest-api-test-db",
+		"MONGO_INITDB_DATABASE":      "go-gin-mongo-test-db",
 	}
 	var port = "27017/tcp"
 

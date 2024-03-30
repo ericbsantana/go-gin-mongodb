@@ -18,7 +18,7 @@ func InitializeMongoDBConnection(uri string) (*mongo.Database, *mongo.Client, er
 		return nil, nil, err
 	}
 
-	db := c.Database("rest-api-template")
+	db := c.Database("go-gin-mongo-template")
 
 	return db, c, nil
 }

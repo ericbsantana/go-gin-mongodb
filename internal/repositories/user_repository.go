@@ -2,7 +2,7 @@ package repositories
 
 import (
 	"context"
-	"rest-api/internal/models"
+	"go-gin-mongo/internal/models"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"

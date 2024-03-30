@@ -1,9 +1,9 @@
 package tests
 
 import (
+	config_test "go-gin-mongo/internal/tests/config"
 	"net/http"
 	"net/http/httptest"
-	config_test "rest-api/internal/tests/config"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

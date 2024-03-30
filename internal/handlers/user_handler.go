@@ -1,11 +1,11 @@
 package handlers
 
 import (
+	"go-gin-mongo/internal/dtos"
+	"go-gin-mongo/internal/models"
+	"go-gin-mongo/internal/repositories"
+	"go-gin-mongo/internal/validator"
 	"net/http"
-	"rest-api/internal/dtos"
-	"rest-api/internal/models"
-	"rest-api/internal/repositories"
-	"rest-api/internal/validator"
 
 	"github.com/gin-gonic/gin"
 )
