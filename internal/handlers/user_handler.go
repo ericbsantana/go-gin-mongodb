@@ -65,7 +65,7 @@ func (h *UserHandler) Create(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"id": createdUser.InsertedID, "username": user.Username, "email": user.Email})
+	c.JSON(http.StatusCreated, gin.H{"_id": createdUser.InsertedID, "username": user.Username, "email": user.Email})
 }
 
 func (h *UserHandler) FindByID(c *gin.Context) {
@@ -119,7 +119,7 @@ func (h *UserHandler) Update(c *gin.Context) {
 
 	updatedUser, _ := h.Repository.FindByID(id)
 
-	c.JSON(http.StatusOK, gin.H{"id": updatedUser.ID, "username": updatedUser.Username, "email": updatedUser.Email})
+	c.JSON(http.StatusOK, gin.H{"_id": updatedUser.ID, "username": updatedUser.Username, "email": updatedUser.Email})
 }
 
 func (h *UserHandler) Delete(c *gin.Context) {

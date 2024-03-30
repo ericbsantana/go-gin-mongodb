@@ -89,10 +89,6 @@ func SeedTestDatabase() {
 			Username: "oppenheimer",
 			Email:    "oppenheimer@example.com",
 		},
-		models.User{
-			ID:    primitive.NewObjectID(),
-			Email: "aristotle@greek.com",
-		},
 	}
 
 	_, err := TestDBInstance.Collection("users").InsertMany(context.Background(), users)
