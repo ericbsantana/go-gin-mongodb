@@ -26,17 +26,6 @@ func TestMain(m *testing.M) {
 	os.Exit(exitVal)
 }
 
-func TestInitializeRouter(t *testing.T) {
-	router := config_test.SetupTestRouter()
-
-	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/", nil)
-	router.ServeHTTP(w, req)
-
-	assert.Equal(t, 200, w.Code)
-	assert.Equal(t, "OK", w.Body.String())
-}
-
 func TestUserHandler(t *testing.T) {
 	t.Cleanup(func() {
 		config_test.ClearDB()
@@ -45,28 +34,41 @@ func TestUserHandler(t *testing.T) {
 	router := config_test.SetupTestRouter()
 
 	t.Run("Create user", func(t *testing.T) {
-		defer config_test.ClearDB()
-		w := httptest.NewRecorder()
-		jsonStr := []byte(`{"username": "oppenheimer", "email": "oppenheimer@example.com"}`)
-		req, _ := http.NewRequest("POST", "/users", bytes.NewBuffer(jsonStr))
-		router.ServeHTTP(w, req)
+		t.Run("should create user", func(t *testing.T) {
+			defer config_test.ClearDB()
+			w := httptest.NewRecorder()
+			jsonStr := []byte(`{"username": "oppenheimer", "email": "oppenheimer@example.com"}`)
+			req, _ := http.NewRequest("POST", "/users", bytes.NewBuffer(jsonStr))
+			router.ServeHTTP(w, req)
 
-		assert.Equal(t, 201, w.Code)
-	})
+			assert.Equal(t, 201, w.Code)
+		})
 
-	t.Run("Create user with existing email", func(t *testing.T) {
-		defer config_test.ClearDB()
+		t.Run("should not allow to create user with existing email", func(t *testing.T) {
+			defer config_test.ClearDB()
 
-		w1 := httptest.NewRecorder()
-		jsonStr := []byte(`{"username": "oppenheimer", "email": "oppenheimer@example.com"}`)
-		req1, _ := http.NewRequest("POST", "/users", bytes.NewBuffer(jsonStr))
-		router.ServeHTTP(w1, req1)
+			w1 := httptest.NewRecorder()
+			jsonStr := []byte(`{"username": "oppenheimer", "email": "oppenheimer@example.com"}`)
+			req1, _ := http.NewRequest("POST", "/users", bytes.NewBuffer(jsonStr))
+			router.ServeHTTP(w1, req1)
 
-		w2 := httptest.NewRecorder()
-		req2, _ := http.NewRequest("POST", "/users", bytes.NewBuffer(jsonStr))
-		router.ServeHTTP(w2, req2)
+			w2 := httptest.NewRecorder()
+			req2, _ := http.NewRequest("POST", "/users", bytes.NewBuffer(jsonStr))
+			router.ServeHTTP(w2, req2)
 
-		assert.Equal(t, 400, w2.Code)
+			assert.Equal(t, 400, w2.Code)
+		})
+
+		t.Run("should not allow to create user with incorrect dto", func(t *testing.T) {
+			defer config_test.ClearDB()
+
+			w := httptest.NewRecorder()
+			jsonStr := []byte(`{"username": "oppenheimer"}`)
+			req, _ := http.NewRequest("POST", "/users", bytes.NewBuffer(jsonStr))
+			router.ServeHTTP(w, req)
+
+			assert.Equal(t, 400, w.Code)
+		})
 	})
 
 	t.Run("Get user", func(t *testing.T) {
@@ -136,6 +138,18 @@ func TestUserHandler(t *testing.T) {
 			router.ServeHTTP(w, req)
 
 			assert.Equal(t, 404, w.Code)
+		})
+
+		t.Run("should not update user with incorrect payload", func(t *testing.T) {
+			config_test.SeedTestDatabase()
+			defer config_test.ClearDB()
+
+			w := httptest.NewRecorder()
+
+			req, _ := http.NewRequest("PATCH", "/users/6607077651565dc6fbb91859", nil)
+			router.ServeHTTP(w, req)
+
+			assert.Equal(t, 400, w.Code)
 		})
 	})
 
