@@ -19,6 +19,7 @@ It contains a sample CRUD structure with a `User` entity, including routes, hand
 - [mongodb/mongo-go-driver](https://github.com/mongodb/mongo-go-driver): Integrates MongoDB for data storage.
 - [testcontainers/testcontainers-go](https://github.com/testcontainers/testcontainers-go): Includes [Testcontainers](https://golang.testcontainers.org/) to simplify integration testing and enable testing with external services like databases, Kafka, or Redis. In this template, it is used to run a MongoDB container for testing.
 - [go-playground/validator](https://github.com/go-playground/validator/): Uses validator to validate DTOs.
+- [actions/setup-go](https://github.com/actions/setup-go): Uses GitHub Actions for build and testing application.
 
 ## Pre-requisites
 
@@ -109,8 +110,6 @@ Contributions are welcome! Feel free to open issues or pull requests to suggest 
 Here's what's planned for future development of this template:
 
 - **Authentication with JWT**: Implement JWT-based authentication to secure endpoints and manage user sessions.
-
-- **CI/CD Pipeline**: Set up a continuous integration and continuous deployment (CI/CD) pipeline to automate the build, testing, and deployment process.
 
 - **Logging Mechanism**: Introduce a logging mechanism to provide insight into the application's behavior.
 
