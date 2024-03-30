@@ -1,9 +1,10 @@
-module rest-api
+module go-gin-mongo
 
 go 1.22.1
 
 require (
 	github.com/gin-gonic/gin v1.9.1
+	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.9.0
 	github.com/testcontainers/testcontainers-go v0.29.1
 )

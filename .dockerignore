@@ -1,0 +1,15 @@
+bin/
+obj/
+
+vendor/
+
+.vscode/
+.idea/
+
+*_test.go
+
+*.tmp
+*.bak
+*.swp
+
+.env.*

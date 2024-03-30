@@ -2,12 +2,15 @@ package main
 
 import (
 	"context"
+	database "go-gin-mongo/internal/databases"
+	"go-gin-mongo/internal/handlers"
+	"go-gin-mongo/internal/repositories"
+	"log"
 	"net/http"
-	database "rest-api/internal/databases"
-	"rest-api/internal/handlers"
-	"rest-api/internal/repositories"
+	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -31,7 +34,15 @@ func SetupRouter(db *mongo.Database) *gin.Engine {
 }
 
 func main() {
-	db, c, err := database.InitializeMongoDBConnection("mongodb://localhost:27017")
+	err := godotenv.Load()
+
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	mongoURI := os.Getenv("MONGODB_URI")
+
+	db, c, err := database.InitializeMongoDBConnection(mongoURI)
 
 	if err != nil {
 		panic(err)
