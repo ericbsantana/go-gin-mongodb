@@ -4,7 +4,8 @@ services:
   app:
     build: .
     volumes:
-      - .:/app
+      - ./:/app
+    command: go run main.go
     ports:
       - "8080:8080"
     depends_on:
