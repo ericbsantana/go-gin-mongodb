@@ -1,7 +1,7 @@
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/ericbsantana/gogimon)
 [![Go Report Card](https://goreportcard.com/badge/github.com/ericbsantana/gogimon)](https://goreportcard.com/report/github.com/ericbsantana/gogimon)
 
-# gogimon
+# Boilerplate: Go + Gin + MongoDB
 
 > Go + Gin + MongoDB = gogimon
 
@@ -25,7 +25,7 @@ It contains a sample CRUD structure with a `User` entity, including routes, hand
 
 - [Go](https://golang.org/dl/): Make sure you have Go installed on your machine.
 - [Docker](https://www.docker.com/get-started): Required to run MongoDB container for both development and testing.
-- [Air](https://github.com/cosmtrek/air/): Optional, but recommended for live reloading during development.
+- [Air](https://github.com/cosmtrek/air/): Recommended for live reloading during development.
 
 ## Quick Start
 
@@ -51,7 +51,7 @@ r.PATCH("/users/:id", userHandler.Update)
 r.DELETE("/users/:id", userHandler.Delete)
 ```
 
-## Manual Setup
+## Manual Setup with Air
 
 If you prefer to run the application locally, you need to have MongoDB running in a container or nativelly on your machine.
 
